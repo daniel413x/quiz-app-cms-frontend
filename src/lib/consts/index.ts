@@ -1,0 +1,12 @@
+export const DASHBOARD_ROUTE = "dashboard";
+export const QUIZ_ROUTE = "quiz";
+export const CREATE_QUIZ_ROUTE = "create";
+export const CREATE_QUIZ_QUESTION_ROUTE = "create";
+export const CREATE_QUIZ_CATEGORY_ROUTE = "create";
+export const EDIT_QUIZ_CATEGORY_ROUTE = "edit";
+export const EDIT_QUIZ_QUESTION_ROUTE = "edit";
+export const STATS_ROUTE = "stats";
+export const FEEDBACK_ROUTE = "feedback";
+export const QUIZ_API_ROUTE = "quiz";
+export const QUIZ_QUESTION_API_ROUTE = "quiz-question";
+export const QUIZ_CATEGORY_API_ROUTE = "quiz-category";

@@ -1,0 +1,10 @@
+dist/
+test/
+**.d.ts
+jest.config.js
+setupTests.js
+.eslintrc.cjs
+tsconfig.node.json
+postcss.config.js
+vite.config.js
+tailwind.config.js
