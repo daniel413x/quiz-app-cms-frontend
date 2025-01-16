@@ -14,9 +14,9 @@ import DashboardPage from "./pages/dashboard/DashboardPage";
 import QuizzesPage from "./pages/quizzes/QuizzesPage";
 import PreviousHistoryItemProvider from "./components/providers/PreviousHistoryItemProvider";
 import "katex/dist/katex.min.css";
-import QuizCategoryPage from "./pages/quizzes/routes/:categoryName/QuizCategoryPage";
-import QuizPage from "./pages/quizzes/routes/:categoryName/:quizName/QuizPage";
-import CreateQuizQuestionPage from "./pages/quizzes/routes/:categoryName/:quizName/create/CreateQuizQuestionPage";
+import QuizCategoryPage from "./pages/quizzes/routes/categoryName/QuizCategoryPage";
+import QuizPage from "./pages/quizzes/routes/categoryName/quizName/QuizPage";
+import CreateQuizQuestionPage from "./pages/quizzes/routes/categoryName/quizName/create/CreateQuizQuestionPage";
 
 function App() {
   return (

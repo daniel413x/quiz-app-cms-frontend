@@ -3,7 +3,7 @@ import { toast } from "sonner";
 import qs from "query-string";
 import { useNavigate, useSearchParams } from "react-router-dom";
 // import { QuizFormValues } from "@/pages/categories/routes/:categoryName/create/CreateQuizPage";
-import { QuizFormValues } from "@/pages/quizzes/routes/:categoryName/components/CreateQuizDialog";
+import { QuizFormValues } from "@/pages/quizzes/routes/categoryName/components/CreateQuizDialog";
 import { errorCatch } from "../utils";
 import { QUIZ_API_ROUTE } from "../consts";
 import { Quiz, QuizGETManyRes, QuizGETRes } from "../types";
