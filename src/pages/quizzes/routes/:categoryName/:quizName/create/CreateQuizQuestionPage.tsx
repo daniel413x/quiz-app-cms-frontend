@@ -1,10 +1,8 @@
 import {
   ChevronLeft,
   Delete,
-  Paperclip,
   Plus,
   UploadCloud,
-  Wand,
   Wand2,
   X,
 } from "lucide-react";
@@ -14,9 +12,9 @@ import ContentFrame from "@/components/ui/common/ContentFrame";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, UseFormReturn } from "react-hook-form";
-import { useNavigate, useParams } from "react-router-dom";
-import { QUIZ_ROUTE } from "@/lib/consts";
-import { QuizAnswer, QuizQuestion } from "@/lib/types";
+import { useParams } from "react-router-dom";
+import { CREATE_QUIZ_QUESTION_ROUTE, QUIZ_ROUTE } from "@/lib/consts";
+import { QuizQuestion } from "@/lib/types";
 import { toast } from "sonner";
 import { v4 as uuid } from "uuid";
 import { Button } from "@/components/ui/common/shadcn/button";
@@ -25,12 +23,12 @@ import {
   FormField, FormItem, FormLabel, FormMessage, Form,
   FormControl,
 } from "@/components/ui/common/shadcn/form";
-import TiptapEditor from "@/pages/quizzes/routes/:categoryName/create/components/TipTapEditor";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Checkbox } from "@/components/ui/common/shadcn/checkbox";
-import { useCreateQuizQuestion } from "@/lib/api/QuizQuestionApi";
+import { useCreateQuizQuestion, useGetQuizQuestion } from "@/lib/api/QuizQuestionApi";
 import ClearFormDialog from "./components/ClearFormDialog";
 import CreateSuccessDialog from "./components/CreateSuccessDialog";
+import TipTapEditor from "./components/TipTapEditor";
 
 const answerSchema = {
   id: z.string(),
@@ -53,9 +51,11 @@ function CreateQuizQuestionPage() {
   const {
     quizQuestionId,
     quizName,
+    categoryName,
   } = useParams();
   const createSuccessDialogTriggerRef = useRef<HTMLButtonElement>(null);
-  const isCreatePage = !quizQuestionId;
+  const isCreatePage = quizQuestionId === CREATE_QUIZ_QUESTION_ROUTE;
+  const [loading, setLoading] = useState<boolean>(!isCreatePage);
   const initializedQuizAnswer = {
     id: uuid(),
     answer: "<p>Write your answer here</p>",
@@ -72,17 +72,17 @@ function CreateQuizQuestionPage() {
   // initialize with values of fetched question if there is one
   // otherwise initialize with empty values
   const resetForm = (quizQuestion?: QuizQuestion) => {
-    form.setValue("id", uuid());
+    form.setValue("id", quizQuestion?.id || uuid());
+    form.setValue("answers", quizQuestion?.answers || [initializedQuizAnswer]);
     form.setValue("question", quizQuestion?.question || "");
-    form.setValue("answers", quizQuestion?.quizAnswers || [initializedQuizAnswer]);
   };
-  const useGetQuiz = (args: any) => ({ });
   const {
     fetchedQuiz,
-  } = useGetQuiz(isCreatePage ? null : quizQuestionId);
+  } = useGetQuizQuestion(isCreatePage ? null : quizQuestionId);
   useEffect(() => {
     if (fetchedQuiz) {
       resetForm(fetchedQuiz);
+      setLoading(false);
     }
   }, [fetchedQuiz]);
   // const {
@@ -97,13 +97,12 @@ function CreateQuizQuestionPage() {
   const {
     wereSearchResults,
     onPressBackButton,
-  } = useReturnToQueryResultsCallback(QUIZ_ROUTE);
+  } = useReturnToQueryResultsCallback(`/${QUIZ_ROUTE}/${categoryName}/${quizName}`);
   const pageHeaderText = isCreatePage ? "Create new quiz question" : "Edit quiz question";
   const {
     createQuizQuestion,
   } = useCreateQuizQuestion(quizName!);
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
     try {
       if (fetchedQuiz) {
         // await updateQuiz(values);
@@ -139,7 +138,6 @@ function CreateQuizQuestionPage() {
         correctAnswer: false,
       };
     });
-
     form.setValue("answers", newAnswers);
   };
   return (
@@ -172,7 +170,11 @@ function CreateQuizQuestionPage() {
                         Question
                       </FormLabel>
                       <FormControl>
-                        <TiptapEditor field={field} className="mt-2" />
+                        {loading ? null : (
+                          <FormControl>
+                            <TipTapEditor field={field} className="mt-2" />
+                          </FormControl>
+                        )}
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -194,9 +196,11 @@ function CreateQuizQuestionPage() {
                               {i + 1}
                               &#46;
                             </span>
-                            <FormControl>
-                              <TiptapEditor field={field} i={i} />
-                            </FormControl>
+                            {loading ? null : (
+                              <FormControl>
+                                <TipTapEditor field={field} i={i} />
+                              </FormControl>
+                            )}
                             <div className="flex items-center gap-4 ml-6">
                               <Checkbox
                                 className="w-6 h-6"

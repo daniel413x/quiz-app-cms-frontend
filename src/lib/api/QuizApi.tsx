@@ -2,16 +2,17 @@ import { useMutation, useQuery } from "react-query";
 import { toast } from "sonner";
 import qs from "query-string";
 import { useNavigate, useSearchParams } from "react-router-dom";
-// import { QuizCategoryFormValues } from "@/pages/categories/routes/:categoryName/create/CreateQuizCategoryPage";
+// import { QuizFormValues } from "@/pages/categories/routes/:categoryName/create/CreateQuizPage";
+import { QuizFormValues } from "@/pages/quizzes/routes/:categoryName/components/CreateQuizDialog";
 import { errorCatch } from "../utils";
-import { QUIZ_API_ROUTE, QUIZ_QUESTION_API_ROUTE } from "../consts";
-import { QuizCategory, QuizGETManyRes } from "../types";
+import { QUIZ_API_ROUTE } from "../consts";
+import { Quiz, QuizGETManyRes, QuizGETRes } from "../types";
 import queryClient from "./queryClient";
 
 const API_BASE_URL = import.meta.env.VITE_APP_API_URL;
 
 const GET_QUIZZES = "getQuizzes";
-const GET_QUIZ = "getQuizCategory";
+const GET_QUIZ = "getQuiz";
 
 export const useGetQuizzes = (categoryName?: string | null) => {
   const [searchParams] = useSearchParams();
@@ -46,9 +47,10 @@ export const useGetQuizzes = (categoryName?: string | null) => {
   };
 };
 
-export const useGetQuizCategory = (id?: string | null) => {
-  const url = `${API_BASE_URL}/${QUIZ_QUESTION_API_ROUTE}/${id}`;
-  const getQuizzesReq: () => Promise<QuizCategory> = async () => {
+// include categoryName to search within a category
+export const useGetQuiz = (quizName: string, categoryName: string | null) => {
+  const url = `${API_BASE_URL}/${QUIZ_API_ROUTE}/${categoryName}/${quizName}`;
+  const getQuizzesReq: () => Promise<QuizGETRes> = async () => {
     const res = await fetch(url, {
       method: "GET",
     });
@@ -60,7 +62,7 @@ export const useGetQuizCategory = (id?: string | null) => {
   const {
     data: fetchedQuiz, isLoading, isError, error,
   } = useQuery([url, GET_QUIZ], getQuizzesReq, {
-    enabled: !!id,
+    enabled: !!quizName || !!categoryName,
   });
   if (error) {
     toast.error(errorCatch(error));
@@ -70,8 +72,8 @@ export const useGetQuizCategory = (id?: string | null) => {
   };
 };
 
-export const useCreateQuizCategory = (categoryName: string) => {
-  const createQuizCategoryReq = async (values: QuizCategoryFormValues): Promise<QuizCategory> => {
+export const useCreateQuiz = (categoryName: string) => {
+  const createQuizReq = async (values: QuizFormValues): Promise<Quiz> => {
     const form = {
       ...values,
       categoryName,
@@ -79,10 +81,9 @@ export const useCreateQuizCategory = (categoryName: string) => {
     const body = JSON.stringify({
       ...form,
     });
-    console.log(body);
     // if the category is created and its id is set in the create category page,
     // then react-query should allow it to be fetched automatically
-    const res = await fetch(`${API_BASE_URL}/${QUIZ_QUESTION_API_ROUTE}`, {
+    const res = await fetch(`${API_BASE_URL}/${QUIZ_API_ROUTE}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -96,10 +97,17 @@ export const useCreateQuizCategory = (categoryName: string) => {
     return json;
   };
   const {
-    mutateAsync: createQuizCategory, isLoading, isError, isSuccess,
-  } = useMutation(createQuizCategoryReq);
+    mutateAsync: createQuiz, isLoading, isError, isSuccess,
+  } = useMutation(
+    createQuizReq,
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(GET_QUIZZES);
+      },
+    },
+  );
   return {
-    createQuizCategory, isLoading, isError, isSuccess,
+    createQuiz, isLoading, isError, isSuccess,
   };
 };
 
@@ -111,7 +119,7 @@ export const useUpdateQuiz = (id: string) => {
     const body = JSON.stringify({
       ...form,
     });
-    const res = await fetch(`${API_BASE_URL}/${QUIZ_QUESTION_API_ROUTE}/${id}`, {
+    const res = await fetch(`${API_BASE_URL}/${QUIZ_API_ROUTE}/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -124,15 +132,22 @@ export const useUpdateQuiz = (id: string) => {
   };
   const {
     mutateAsync: updateQuiz, isLoading, isError, isSuccess,
-  } = useMutation(updateQuizReq);
+  } = useMutation(
+    updateQuizReq,
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(GET_QUIZZES);
+      },
+    },
+  );
   return {
     updateQuiz, isLoading, isError, isSuccess,
   };
 };
 
-export const useDeleteQuiz = (id: number, returnTo?: string) => {
+export const useDeleteQuiz = (id: string, returnTo?: string) => {
   const navigate = useNavigate();
-  const url = `${API_BASE_URL}/${QUIZ_QUESTION_API_ROUTE}/${id}`;
+  const url = `${API_BASE_URL}/${QUIZ_API_ROUTE}/${id}`;
   const deleteQuizReq: () => Promise<void> = async () => {
     const res = await fetch(url, {
       method: "DELETE",

@@ -46,7 +46,7 @@ export const useGetQuizQuestions = () => {
   };
 };
 
-export const useGetQuiz = (id?: string | null) => {
+export const useGetQuizQuestion = (id?: string | null) => {
   const url = `${API_BASE_URL}/${QUIZ_QUESTION_API_ROUTE}/${id}`;
   const getQuizQuestionsReq: () => Promise<QuizQuestion> = async () => {
     const res = await fetch(url, {
@@ -130,23 +130,23 @@ export const useUpdateQuiz = (id: string) => {
   };
 };
 
-export const useDeleteQuiz = (id: number, returnTo?: string) => {
+export const useDeleteQuizQuestion = (id: string, returnTo?: string) => {
   const navigate = useNavigate();
   const url = `${API_BASE_URL}/${QUIZ_QUESTION_API_ROUTE}/${id}`;
-  const deleteQuizReq: () => Promise<void> = async () => {
+  const deleteQuizQuestionReq: () => Promise<void> = async () => {
     const res = await fetch(url, {
       method: "DELETE",
     });
     if (!res.ok) {
-      throw new Error("failed to delete quiz");
+      throw new Error("failed to delete category");
     }
   };
   const {
-    mutate: deleteQuiz, isLoading, isError, error,
-  } = useMutation(deleteQuizReq, {
+    mutate: deleteQuizQuestion, isLoading, isError, error,
+  } = useMutation(deleteQuizQuestionReq, {
     onSuccess: () => {
       queryClient.invalidateQueries(GET_QUIZZES);
-      toast.success("Quiz was deleted successfully");
+      toast.success("Quiz question was deleted successfully");
       if (returnTo) {
         navigate(returnTo);
       }
@@ -156,6 +156,6 @@ export const useDeleteQuiz = (id: number, returnTo?: string) => {
     toast.error(errorCatch(error));
   }
   return {
-    deleteQuiz, isLoading, isError, error,
+    deleteQuizQuestion, isLoading, isError, error,
   };
 };

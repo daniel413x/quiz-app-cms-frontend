@@ -6,7 +6,6 @@ import {
   QUIZ_ROUTE,
   DASHBOARD_ROUTE,
   CREATE_QUIZ_CATEGORY_ROUTE,
-  CREATE_QUIZ_QUESTION_ROUTE,
   EDIT_QUIZ_CATEGORY_ROUTE,
   EDIT_QUIZ_QUESTION_ROUTE,
 } from "./lib/consts";
@@ -14,9 +13,10 @@ import RootPage from "./pages/root/RootPage";
 import DashboardPage from "./pages/dashboard/DashboardPage";
 import QuizzesPage from "./pages/quizzes/QuizzesPage";
 import PreviousHistoryItemProvider from "./components/providers/PreviousHistoryItemProvider";
-import CreateQuizQuestionPage from "./pages/quizzes/routes/:categoryName/create/CreateQuizQuestionPage";
 import "katex/dist/katex.min.css";
 import QuizCategoryPage from "./pages/quizzes/routes/:categoryName/QuizCategoryPage";
+import QuizPage from "./pages/quizzes/routes/:categoryName/:quizName/QuizPage";
+import CreateQuizQuestionPage from "./pages/quizzes/routes/:categoryName/:quizName/create/CreateQuizQuestionPage";
 
 function App() {
   return (
@@ -36,6 +36,14 @@ function App() {
             element={(
               <MainLayout>
                 <QuizzesPage />
+              </MainLayout>
+          )}
+          />
+          <Route
+            path={`/${QUIZ_ROUTE}/:categoryName/:quizName`}
+            element={(
+              <MainLayout>
+                <QuizPage />
               </MainLayout>
           )}
           />
@@ -68,7 +76,7 @@ function App() {
           />
           {/* create "Programming -> JavaScript" */}
           <Route
-            path={`/${QUIZ_ROUTE}/:categoryName/:quizName/${CREATE_QUIZ_QUESTION_ROUTE}`}
+            path={`/${QUIZ_ROUTE}/:categoryName/:quizName/:quizQuestionId`}
             element={(
               <MainLayout>
                 <CreateQuizQuestionPage />

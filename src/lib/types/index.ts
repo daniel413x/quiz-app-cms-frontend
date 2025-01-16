@@ -9,6 +9,7 @@ interface Pagination {
   pageLimitReached: boolean;
 }
 
+export type GETRes<T> = [T, number];
 export type GETManyRes<T> = [T[], number];
 
 export interface Car {
@@ -27,6 +28,7 @@ export interface Car {
 export interface Quiz {
   id: string;
   name: string;
+  questions: QuizQuestion[];
 }
 
 export interface QuizCategory {
@@ -45,15 +47,17 @@ export interface QuizAnswer {
 export interface QuizQuestion {
   id: string;
   question: string;
-  quizAnswers: QuizAnswer[];
+  answers: QuizAnswer[];
   category: QuizCategory;
 }
 
-export interface QuizQuestionGETManyRes extends GETManyRes<QuizQuestion> { }
+export type QuizQuestionGETManyRes = GETManyRes<QuizQuestion>;
 
-export interface QuizCategoryGETManyRes extends GETManyRes<QuizCategory> { }
+export type QuizCategoryGETManyRes = GETManyRes<QuizCategory>;
 
-export interface QuizGETManyRes extends GETManyRes<Quiz> { }
+export type QuizGETManyRes = GETManyRes<Quiz>;
+
+export type QuizGETRes = GETRes<Quiz>;
 
 export const namedObjectSchema = z.object({
   id: z.number().min(1, "Id is required"),

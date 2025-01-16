@@ -9,9 +9,9 @@ import { cn } from "@/lib/utils";
 import {
   List, ListOrdered, Quote, Redo, Undo,
 } from "lucide-react";
-import { QuizQuestionFormValues } from "@/pages/quizzes/routes/:categoryName/create/CreateQuizQuestionPage";
 import { QuizAnswer } from "@/lib/types";
 import { Button } from "@/components/ui/common/shadcn/button";
+import { QuizQuestionFormValues } from "../CreateQuizQuestionPage";
 
 interface TipTapEditorProps {
   disabled?: boolean;
@@ -57,7 +57,7 @@ function TipTapEditor({
       >
         {" "}
         {!editor ? null : (
-          <div className="absolute shadow-md bg-white bottom-full group-focus-within:flex flex-wrap border border-input hidden">
+          <div className="absolute bg-white bottom-[99%] group-focus-within:flex flex-wrap border border-b-0 border-input hidden pb-4">
             <Button
               variant="borderL"
               onClick={() => editor.chain().focus().toggleBold().run()}

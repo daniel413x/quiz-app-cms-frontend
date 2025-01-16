@@ -13,8 +13,8 @@ import {
   FormControl, FormField, FormItem, FormLabel, FormMessage,
 } from "@/components/ui/common/shadcn/form";
 import { Input } from "@/components/ui/common/shadcn/input";
-import { useCreateQuizCategory, useUpdateQuizCategory } from "@/lib/api/QuizCategoryApi";
-import { QuizCategory } from "@/lib/types";
+import { useCreateQuiz, useUpdateQuiz } from "@/lib/api/QuizApi";
+import { Quiz } from "@/lib/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ResetIcon } from "@radix-ui/react-icons";
 import {
@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import { ReactNode, useRef } from "react";
 import { useForm } from "react-hook-form";
+import { useParams } from "react-router-dom";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -29,29 +30,32 @@ const formSchema = z.object({
   name: z.string(),
 });
 
-export type QuizCategoryFormValues = z.infer<typeof formSchema>;
+export type QuizFormValues = z.infer<typeof formSchema>;
 
-interface CreateQuizCategoryDialogProps {
+interface CreateQuizDialogProps {
   children: ReactNode;
-  quizCategory?: QuizCategory;
+  quiz?: Quiz;
 }
 
-function CreateQuizCategoryDialog({
+function CreateQuizDialog({
   children,
-  quizCategory,
-}: CreateQuizCategoryDialogProps) {
-  const form = useForm<QuizCategoryFormValues>({
+  quiz,
+}: CreateQuizDialogProps) {
+  const form = useForm<QuizFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: quizCategory ? quizCategory.name : "",
+      name: quiz ? quiz.name : "",
     },
   });
   const {
-    createQuizCategory,
-  } = useCreateQuizCategory();
+    categoryName,
+  } = useParams();
   const {
-    updateQuizCategory,
-  } = useUpdateQuizCategory(quizCategory?.id || "");
+    createQuiz,
+  } = useCreateQuiz(categoryName!);
+  const {
+    updateQuiz,
+  } = useUpdateQuiz(quiz?.id || "");
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const closeModal = () => {
     closeButtonRef.current?.click();
@@ -59,12 +63,12 @@ function CreateQuizCategoryDialog({
   const { isSubmitting } = form.formState;
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      if (quizCategory) {
-        await updateQuizCategory(values);
+      if (quiz) {
+        await updateQuiz(values);
         toast.success("Quiz updated");
         closeModal();
       } else {
-        await createQuizCategory(values);
+        await createQuiz(values);
         toast.success("Quiz created");
         closeModal();
       }
@@ -72,7 +76,7 @@ function CreateQuizCategoryDialog({
       toast.error(error.response.data || "Something went wrong...");
     }
   };
-  const title = quizCategory ? "Edit quiz category" : "Create quiz category";
+  const title = quiz ? "Edit quiz" : "Create quiz";
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -88,7 +92,6 @@ function CreateQuizCategoryDialog({
             {title}
           </DialogTitle>
         </DialogHeader>
-
         <Form {...form}>
           <form className="flex flex-col" onSubmit={form.handleSubmit(onSubmit)}>
             <FormField
@@ -103,7 +106,7 @@ function CreateQuizCategoryDialog({
                   <FormControl>
                     <Input
                       disabled={isSubmitting}
-                      placeholder="Mathematics"
+                      placeholder="JavaScript"
                       {...field}
                     />
                   </FormControl>
@@ -138,4 +141,4 @@ function CreateQuizCategoryDialog({
   );
 }
 
-export default CreateQuizCategoryDialog;
+export default CreateQuizDialog;

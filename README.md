@@ -1,4 +1,4 @@
-# `Warehouse project`
+# `Quiz project`
 by Daniel Maramba
 
 ### `Set environment variables`

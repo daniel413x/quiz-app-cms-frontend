@@ -10,7 +10,7 @@ const useReturnToQueryResultsCallback = (route: string) => {
     if (wereSearchResults) {
       navigate(previousHistoryItem!);
     } else {
-      navigate(`/${route}`);
+      navigate(route);
     }
   };
   return {

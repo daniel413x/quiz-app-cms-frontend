@@ -124,7 +124,6 @@ export const useUpdateQuizCategory = (id: string) => {
       },
       body,
     });
-    console.log(res);
     if (!res.ok) {
       throw new Error("failed to update category");
     }
@@ -144,9 +143,9 @@ export const useUpdateQuizCategory = (id: string) => {
   };
 };
 
-export const useDeleteQuiz = (id: number) => {
+export const useDeleteQuizCategory = (id: string) => {
   const url = `${API_BASE_URL}/${QUIZ_CATEGORY_API_ROUTE}/${id}`;
-  const deleteQuizReq: () => Promise<void> = async () => {
+  const deleteQuizCategoryReq: () => Promise<void> = async () => {
     const res = await fetch(url, {
       method: "DELETE",
     });
@@ -155,8 +154,8 @@ export const useDeleteQuiz = (id: number) => {
     }
   };
   const {
-    mutate: deleteQuiz, isLoading, isError, error,
-  } = useMutation(deleteQuizReq, {
+    mutate: deleteQuizCategory, isLoading, isError, error,
+  } = useMutation(deleteQuizCategoryReq, {
     onSuccess: () => {
       queryClient.invalidateQueries(GET_QUIZ_CATEGORIES);
       toast.success("Quiz category was deleted successfully");
@@ -166,6 +165,6 @@ export const useDeleteQuiz = (id: number) => {
     toast.error(errorCatch(error));
   }
   return {
-    deleteQuiz, isLoading, isError, error,
+    deleteQuizCategory, isLoading, isError, error,
   };
 };

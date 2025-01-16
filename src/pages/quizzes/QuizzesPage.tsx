@@ -24,7 +24,6 @@ function QuizzesPage() {
             <CreateQuizCategoryDialog>
               <Button
                 variant="outline"
-                onClick={() => console.log("")}
                 className="flex items-center gap-1 py-6 px-8"
               >
                 <Plus />

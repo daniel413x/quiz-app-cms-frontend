@@ -1,40 +1,41 @@
 import { Button } from "@/components/ui/common/shadcn/button";
 import { Skeleton } from "@/components/ui/common/shadcn/skeleton";
 import { QUIZ_ROUTE } from "@/lib/consts";
-import { QuizCategory } from "@/lib/types";
+import { QuizQuestion } from "@/lib/types";
 import {
   Pencil,
   Trash2,
 } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
-import CreateQuizDialog from "./CreateQuizDialog";
 import DeleteQuizDialog from "./DeleteQuizDialog";
 
-interface QuizCardProps {
-  quiz: QuizCategory;
+interface QuizQuestionCardProps {
+  quizQuestion: QuizQuestion;
 }
 
-function QuizCard({
-  quiz,
-}: QuizCardProps) {
+function QuizQuestionCard({
+  quizQuestion,
+}: QuizQuestionCardProps) {
   const {
+    quizName,
     categoryName,
   } = useParams();
   return (
     <div className="flex items-center justify-between py-3 px-5">
       <Link
         className="w-full"
-        to={`/${QUIZ_ROUTE}/${categoryName}/${quiz.name.toLowerCase()}`}
+        to={`/${QUIZ_ROUTE}/${categoryName}/${quizName}/${quizQuestion.id}`}
       >
-        {quiz.name}
+        {quizQuestion.question}
       </Link>
-      <div className="flex gap-2">
-        <CreateQuizDialog quiz={quiz}>
-          <Button className="flex gap-1" variant="outline">
-            <Pencil />
-          </Button>
-        </CreateQuizDialog>
-        <DeleteQuizDialog quiz={quiz}>
+      <div className="flex gap-2 items-center">
+        <Link
+          className="flex gap-1"
+          to={`/${QUIZ_ROUTE}/${categoryName}/${quizName}/${quizQuestion.id}`}
+        >
+          <Pencil />
+        </Link>
+        <DeleteQuizDialog quizQuestion={quizQuestion}>
           <Button className="flex gap-1" variant="outline">
             <Trash2 />
           </Button>
@@ -44,10 +45,10 @@ function QuizCard({
   );
 }
 
-export function QuizCardSkeleton() {
+export function QuizQuestionCardSkeleton() {
   return (
     <Skeleton className="w-full h-full" />
   );
 }
 
-export default QuizCard;
+export default QuizQuestionCard;

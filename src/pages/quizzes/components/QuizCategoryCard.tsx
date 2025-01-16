@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import CreateQuizCategoryDialog from "./CreateQuizCategoryDialog";
+import DeleteQuizCategoryDialog from "./DeleteQuizCategoryDialog";
 
 interface QuizCategoryCardProps {
   quizCategory: QuizCategory;
@@ -30,9 +31,13 @@ function QuizCategoryCard({
             <Pencil />
           </Button>
         </CreateQuizCategoryDialog>
-        <Button className="flex gap-1" variant="outline">
-          <Trash2 />
-        </Button>
+        <DeleteQuizCategoryDialog
+          quizCategory={quizCategory}
+        >
+          <Button className="flex gap-1" variant="outline">
+            <Trash2 />
+          </Button>
+        </DeleteQuizCategoryDialog>
       </div>
     </div>
   );
