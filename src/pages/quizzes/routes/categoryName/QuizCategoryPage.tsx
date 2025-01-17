@@ -20,9 +20,9 @@ function QuizCategoryPage() {
     isLoading: isLoadingGET,
   } = useGetQuizzes(categoryName);
   return (
-    <Meta title="Quizzes">
+    <Meta title={categoryName!}>
       <main>
-        <PageHeader header="Quizzes" icon={<List />} />
+        <PageHeader header={categoryName!} icon={<List />} />
         <ContentFrame mt>
           <div className="flex flex-col">
             <CreateQuizDialog>
@@ -31,7 +31,7 @@ function QuizCategoryPage() {
                 className="flex items-center gap-1 py-6 px-8"
               >
                 <Plus />
-                Create Quiz Category
+                Create Quiz
               </Button>
             </CreateQuizDialog>
             <ul className="">

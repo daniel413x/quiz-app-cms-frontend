@@ -60,6 +60,7 @@ function TipTapEditor({
           <div className="absolute bg-white bottom-[99%] group-focus-within:flex flex-wrap border border-b-0 border-input hidden pb-4">
             <Button
               variant="borderL"
+              type="button"
               onClick={() => editor.chain().focus().toggleBold().run()}
               disabled={
             !editor.can()
@@ -75,6 +76,7 @@ function TipTapEditor({
               </strong>
             </Button>
             <Button
+              type="button"
               variant="borderL"
               onClick={() => editor.chain().focus().toggleItalic().run()}
               disabled={
@@ -91,6 +93,7 @@ function TipTapEditor({
               </em>
             </Button>
             <Button
+              type="button"
               variant="borderL"
               onClick={() => editor.chain().focus().toggleStrike().run()}
               disabled={
@@ -107,6 +110,7 @@ function TipTapEditor({
               </del>
             </Button>
             <Button
+              type="button"
               variant="borderL"
               onClick={() => editor.chain().focus().toggleCode().run()}
               disabled={
@@ -125,6 +129,7 @@ function TipTapEditor({
               </span>
             </Button>
             <Button
+              type="button"
               variant="borderL"
               onClick={() => editor.chain().focus().toggleCodeBlock().run()}
               className={editor.isActive("codeBlock") ? "is-active" : ""}
@@ -134,6 +139,7 @@ function TipTapEditor({
               </span>
             </Button>
             <Button
+              type="button"
               variant="borderL"
               onClick={() => editor.chain().focus().setParagraph().run()}
               className={editor.isActive("paragraph") ? "is-active" : ""}
@@ -141,6 +147,7 @@ function TipTapEditor({
               P
             </Button>
             <Button
+              type="button"
               variant="borderL"
               onClick={() => editor.chain().focus().toggleBulletList().run()}
               className={cn("relative", {
@@ -153,6 +160,7 @@ function TipTapEditor({
               </span>
             </Button>
             <Button
+              type="button"
               variant="borderL"
               onClick={() => editor.chain().focus().toggleOrderedList().run()}
               className={cn("relative", {
@@ -165,6 +173,7 @@ function TipTapEditor({
               </span>
             </Button>
             <Button
+              type="button"
               variant="borderL"
               onClick={() => editor.chain().focus().toggleBlockquote().run()}
               className={editor.isActive("blockquote") ? "is-active" : ""}
@@ -172,6 +181,7 @@ function TipTapEditor({
               <Quote size={16} />
             </Button>
             <Button
+              type="button"
               variant="borderL"
               onClick={() => editor.chain().focus().undo().run()}
               disabled={
@@ -185,6 +195,7 @@ function TipTapEditor({
               <Undo size={16} />
             </Button>
             <Button
+              type="button"
               variant="borderL"
               onClick={() => editor.chain().focus().redo().run()}
               disabled={

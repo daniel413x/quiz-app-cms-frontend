@@ -47,29 +47,29 @@ export const useGetQuizCategories = () => {
   };
 };
 
-// export const useGetQuizCategory = (id?: string | null) => {
-//   const url = `${API_BASE_URL}/${QUIZ_QUESTION_API_ROUTE}/${id}`;
-//   const getQuizCategoriesReq: () => Promise<QuizCategory> = async () => {
-//     const res = await fetch(url, {
-//       method: "GET",
-//     });
-//     if (!res.ok) {
-//       throw new Error(`Failed to get category with id ${id}`);
-//     }
-//     return res.json();
-//   };
-//   const {
-//     data: fetchedQuiz, isLoading, isError, error,
-//   } = useQuery([url, GET_QUIZ_CATEGORY], getQuizCategoriesReq, {
-//     enabled: !!id,
-//   });
-//   if (error) {
-//     toast.error(errorCatch(error));
-//   }
-//   return {
-//     fetchedQuiz, isLoading, isError, error,
-//   };
-// };
+export const useGetQuizCategory = (id?: string | null) => {
+  const url = `${API_BASE_URL}/${QUIZ_CATEGORY_API_ROUTE}/${id}`;
+  const getQuizCategoriesReq: () => Promise<QuizCategory> = async () => {
+    const res = await fetch(url, {
+      method: "GET",
+    });
+    if (!res.ok) {
+      throw new Error(`Failed to get category with id ${id}`);
+    }
+    return res.json();
+  };
+  const {
+    data: fetchedQuiz, isLoading, isError, error,
+  } = useQuery([url, GET_QUIZ_CATEGORY], getQuizCategoriesReq, {
+    enabled: !!id,
+  });
+  if (error) {
+    toast.error(errorCatch(error));
+  }
+  return {
+    fetchedQuiz, isLoading, isError, error,
+  };
+};
 
 export const useCreateQuizCategory = () => {
   const createQuizCategoryReq = async (values: QuizCategoryFormValues): Promise<QuizCategory> => {

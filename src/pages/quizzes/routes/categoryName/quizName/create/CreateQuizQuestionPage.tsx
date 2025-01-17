@@ -25,22 +25,23 @@ import {
 } from "@/components/ui/common/shadcn/form";
 import { useEffect, useRef, useState } from "react";
 import { Checkbox } from "@/components/ui/common/shadcn/checkbox";
-import { useCreateQuizQuestion, useGetQuizQuestion } from "@/lib/api/QuizQuestionApi";
+import { useCreateQuizQuestion, useGetQuizQuestion, useUpdateQuizQuestion } from "@/lib/api/QuizQuestionApi";
 import ClearFormDialog from "./components/ClearFormDialog";
 import CreateSuccessDialog from "./components/CreateSuccessDialog";
 import TipTapEditor from "./components/TipTapEditor";
 
 const answerSchema = {
   id: z.string(),
+  quizQuestionId: z.optional(z.string()),
   answer: z.string(),
   correctAnswer: z.boolean(),
-  order: z.optional(z.number()),
+  order: z.optional(z.number().or(z.null())),
 };
 
 const formSchema = z.object({
   id: z.string(),
   question: z.string().min(1),
-  answers: z.array(z.object(answerSchema)).min(1),
+  answers: z.array(z.object(answerSchema)),
 });
 
 export type QuizQuestionForm = UseFormReturn<z.infer<typeof formSchema>, any, undefined>;
@@ -102,10 +103,13 @@ function CreateQuizQuestionPage() {
   const {
     createQuizQuestion,
   } = useCreateQuizQuestion(quizName!);
+  const {
+    updateQuizQuestion,
+  } = useUpdateQuizQuestion(quizName!);
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       if (fetchedQuiz) {
-        // await updateQuiz(values);
+        await updateQuizQuestion(values);
         toast.success("Quiz updated");
       } else {
         await createQuizQuestion(values);
@@ -257,6 +261,7 @@ function CreateQuizQuestionPage() {
                     className="mt-4"
                     variant="outline"
                     type="submit"
+                    onClick={() => console.log(form.getValues(), form.formState.errors)}
                   >
                     <UploadCloud className="w-4 h-4 mr-1" />
                     Save

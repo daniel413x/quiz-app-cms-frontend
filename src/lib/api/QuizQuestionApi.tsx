@@ -10,7 +10,7 @@ import queryClient from "./queryClient";
 
 const API_BASE_URL = import.meta.env.VITE_APP_API_URL;
 
-const GET_QUIZZES = "getQuizQuestions";
+const GET_QUIZ_QUESTIONS = "getQuizQuestions";
 const GET_CAR = "getQuizQuestion";
 
 export const useGetQuizQuestions = () => {
@@ -37,7 +37,7 @@ export const useGetQuizQuestions = () => {
   };
   const {
     data: fetchedQuizQuestions, isLoading, isError, error,
-  } = useQuery([GET_QUIZZES, url], getQuizQuestionsReq);
+  } = useQuery([GET_QUIZ_QUESTIONS, url], getQuizQuestionsReq);
   if (error) {
     toast.error(errorCatch(error));
   }
@@ -79,7 +79,6 @@ export const useCreateQuizQuestion = (quizName: string) => {
     const body = JSON.stringify({
       ...form,
     });
-    console.log(body);
     // if the quiz is created and its id is set in the create quiz page,
     // then react-query should allow it to be fetched automatically
     const res = await fetch(`${API_BASE_URL}/${QUIZ_QUESTION_API_ROUTE}`, {
@@ -103,8 +102,8 @@ export const useCreateQuizQuestion = (quizName: string) => {
   };
 };
 
-export const useUpdateQuiz = (id: string) => {
-  const updateQuizReq = async (values: QuizFormValues): Promise<void> => {
+export const useUpdateQuizQuestion = (id: string) => {
+  const updateQuizReq = async (values: QuizQuestionFormValues): Promise<void> => {
     const form = {
       ...values,
     };
@@ -123,10 +122,10 @@ export const useUpdateQuiz = (id: string) => {
     }
   };
   const {
-    mutateAsync: updateQuiz, isLoading, isError, isSuccess,
+    mutateAsync: updateQuizQuestion, isLoading, isError, isSuccess,
   } = useMutation(updateQuizReq);
   return {
-    updateQuiz, isLoading, isError, isSuccess,
+    updateQuizQuestion, isLoading, isError, isSuccess,
   };
 };
 
@@ -138,14 +137,14 @@ export const useDeleteQuizQuestion = (id: string, returnTo?: string) => {
       method: "DELETE",
     });
     if (!res.ok) {
-      throw new Error("failed to delete category");
+      throw new Error("failed to delete quiz question");
     }
   };
   const {
     mutate: deleteQuizQuestion, isLoading, isError, error,
   } = useMutation(deleteQuizQuestionReq, {
     onSuccess: () => {
-      queryClient.invalidateQueries(GET_QUIZZES);
+      queryClient.invalidateQueries(GET_QUIZ_QUESTIONS);
       toast.success("Quiz question was deleted successfully");
       if (returnTo) {
         navigate(returnTo);

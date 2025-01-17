@@ -16,9 +16,9 @@ function QuizzesPage() {
     isLoading: isLoadingGET,
   } = useGetQuizCategories();
   return (
-    <Meta title="Quizzes">
+    <Meta title="Quiz Categories">
       <main>
-        <PageHeader header="Quizzes" icon={<List />} />
+        <PageHeader header="Quiz Categories" icon={<List />} />
         <ContentFrame mt>
           <div className="flex flex-col">
             <CreateQuizCategoryDialog>
