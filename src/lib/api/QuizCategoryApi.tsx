@@ -1,9 +1,9 @@
 import { useMutation, useQuery } from "react-query";
 import { toast } from "sonner";
 import qs from "query-string";
-import { useNavigate, useSearchParams } from "react-router-dom";
-// import { QuizCategoryFormValues } from "@/pages/categories/routes/:categoryName/create/CreateQuizCategoryPage";
+import { useSearchParams } from "react-router-dom";
 import { QuizCategoryFormValues } from "@/pages/quizzes/components/CreateQuizCategoryDialog";
+import { useAuth0 } from "@auth0/auth0-react";
 import { errorCatch } from "../utils";
 import { QUIZ_CATEGORY_API_ROUTE } from "../consts";
 import { QuizCategory, QuizCategoryGETManyRes } from "../types";
@@ -15,6 +15,7 @@ const GET_QUIZ_CATEGORIES = "getQuizCategories";
 // const GET_QUIZ_CATEGORY = "getQuizCategory";
 
 export const useGetQuizCategories = () => {
+  const { getAccessTokenSilently } = useAuth0();
   const [searchParams] = useSearchParams();
   const page = Number(searchParams.get("page")) - 1 || 0;
   const search = searchParams.get("search");
@@ -28,8 +29,13 @@ export const useGetQuizCategories = () => {
     },
   }, { skipNull: true });
   const getQuizCategoriesReq: () => Promise<QuizCategoryGETManyRes> = async () => {
+    const accessToken = await getAccessTokenSilently();
     const res = await fetch(url, {
       method: "GET",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
     });
     if (!res.ok) {
       throw new Error("Failed to get categories");
@@ -47,32 +53,10 @@ export const useGetQuizCategories = () => {
   };
 };
 
-export const useGetQuizCategory = (id?: string | null) => {
-  const url = `${API_BASE_URL}/${QUIZ_CATEGORY_API_ROUTE}/${id}`;
-  const getQuizCategoriesReq: () => Promise<QuizCategory> = async () => {
-    const res = await fetch(url, {
-      method: "GET",
-    });
-    if (!res.ok) {
-      throw new Error(`Failed to get category with id ${id}`);
-    }
-    return res.json();
-  };
-  const {
-    data: fetchedQuiz, isLoading, isError, error,
-  } = useQuery([url, GET_QUIZ_CATEGORY], getQuizCategoriesReq, {
-    enabled: !!id,
-  });
-  if (error) {
-    toast.error(errorCatch(error));
-  }
-  return {
-    fetchedQuiz, isLoading, isError, error,
-  };
-};
-
 export const useCreateQuizCategory = () => {
+  const { getAccessTokenSilently } = useAuth0();
   const createQuizCategoryReq = async (values: QuizCategoryFormValues): Promise<QuizCategory> => {
+    const accessToken = await getAccessTokenSilently();
     const form = {
       ...values,
     };
@@ -85,6 +69,7 @@ export const useCreateQuizCategory = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
       },
       body,
     });
@@ -110,7 +95,9 @@ export const useCreateQuizCategory = () => {
 };
 
 export const useUpdateQuizCategory = (id: string) => {
+  const { getAccessTokenSilently } = useAuth0();
   const updateQuizCategoryReq = async (values: QuizCategoryFormValues): Promise<void> => {
+    const accessToken = await getAccessTokenSilently();
     const form = {
       ...values,
     };
@@ -121,6 +108,7 @@ export const useUpdateQuizCategory = (id: string) => {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
       },
       body,
     });
@@ -144,10 +132,15 @@ export const useUpdateQuizCategory = (id: string) => {
 };
 
 export const useDeleteQuizCategory = (id: string) => {
+  const { getAccessTokenSilently } = useAuth0();
   const url = `${API_BASE_URL}/${QUIZ_CATEGORY_API_ROUTE}/${id}`;
   const deleteQuizCategoryReq: () => Promise<void> = async () => {
+    const accessToken = await getAccessTokenSilently();
     const res = await fetch(url, {
       method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
     });
     if (!res.ok) {
       throw new Error("failed to delete quiz category");

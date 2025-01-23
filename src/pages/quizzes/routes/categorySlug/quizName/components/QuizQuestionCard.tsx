@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/common/shadcn/button";
 import { Skeleton } from "@/components/ui/common/shadcn/skeleton";
-import { QUIZ_ROUTE } from "@/lib/consts";
+import { QUIZZES_ROUTE } from "@/lib/consts";
 import { QuizQuestion } from "@/lib/types";
 import {
   Pencil,
@@ -17,21 +17,22 @@ function QuizQuestionCard({
   quizQuestion,
 }: QuizQuestionCardProps) {
   const {
-    quizName,
-    categoryName,
+    domainSlug,
+    quizSlug,
+    categorySlug,
   } = useParams();
   return (
     <div className="flex items-center justify-between py-3 px-5">
       <Link
         className="w-full"
-        to={`/${QUIZ_ROUTE}/${categoryName}/${quizName}/${quizQuestion.id}`}
+        to={`/${domainSlug}/${QUIZZES_ROUTE}/${categorySlug}/${quizSlug}/${quizQuestion.id}`}
       >
         {quizQuestion.question}
       </Link>
       <div className="flex gap-2 items-center">
         <Link
           className="flex gap-1"
-          to={`/${QUIZ_ROUTE}/${categoryName}/${quizName}/${quizQuestion.id}`}
+          to={`/${domainSlug}/${QUIZZES_ROUTE}/${categorySlug}/${quizSlug}/${quizQuestion.id}`}
         >
           <Pencil />
         </Link>

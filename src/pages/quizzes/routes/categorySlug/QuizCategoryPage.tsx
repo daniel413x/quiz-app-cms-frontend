@@ -13,16 +13,16 @@ import CreateQuizDialog from "./components/CreateQuizDialog";
 
 function QuizCategoryPage() {
   const {
-    categoryName,
+    categorySlug,
   } = useParams();
   const {
     data,
     isLoading: isLoadingGET,
-  } = useGetQuizzes(categoryName);
+  } = useGetQuizzes(categorySlug);
   return (
-    <Meta title={categoryName!}>
+    <Meta title="category name!">
       <main>
-        <PageHeader header={categoryName!} icon={<List />} />
+        <PageHeader header="category name!" icon={<List />} />
         <ContentFrame mt>
           <div className="flex flex-col">
             <CreateQuizDialog>

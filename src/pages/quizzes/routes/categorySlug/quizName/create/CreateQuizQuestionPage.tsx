@@ -13,7 +13,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, UseFormReturn } from "react-hook-form";
 import { useParams } from "react-router-dom";
-import { CREATE_QUIZ_QUESTION_ROUTE, QUIZ_ROUTE } from "@/lib/consts";
+import { CREATE_QUIZ_QUESTION_ROUTE, QUIZZES_ROUTE } from "@/lib/consts";
 import { QuizQuestion } from "@/lib/types";
 import { toast } from "sonner";
 import { v4 as uuid } from "uuid";
@@ -50,9 +50,10 @@ export type QuizQuestionFormValues = z.infer<typeof formSchema>;
 
 function CreateQuizQuestionPage() {
   const {
+    domainSlug,
     quizQuestionId,
-    quizName,
-    categoryName,
+    quizSlug,
+    categorySlug,
   } = useParams();
   const createSuccessDialogTriggerRef = useRef<HTMLButtonElement>(null);
   const isCreatePage = quizQuestionId === CREATE_QUIZ_QUESTION_ROUTE;
@@ -94,18 +95,18 @@ function CreateQuizQuestionPage() {
   //   wereSearchResults,
   //   onPressBackButton,
   // } = useReturnToQueryResultsCallback(QUIZS_ROUTE);
-  const { isSubmitting } = form.formState;
+  // const { isSubmitting } = form.formState;
   const {
     wereSearchResults,
     onPressBackButton,
-  } = useReturnToQueryResultsCallback(`/${QUIZ_ROUTE}/${categoryName}/${quizName}`);
+  } = useReturnToQueryResultsCallback(`/${domainSlug}/${QUIZZES_ROUTE}/${categorySlug}/${quizSlug}`);
   const pageHeaderText = isCreatePage ? "Create new quiz question" : "Edit quiz question";
   const {
     createQuizQuestion,
-  } = useCreateQuizQuestion(quizName!);
+  } = useCreateQuizQuestion();
   const {
     updateQuizQuestion,
-  } = useUpdateQuizQuestion(quizName!);
+  } = useUpdateQuizQuestion();
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       if (fetchedQuiz) {
@@ -114,7 +115,7 @@ function CreateQuizQuestionPage() {
       } else {
         await createQuizQuestion(values);
         createSuccessDialogTriggerRef.current?.click();
-        // navigate(`/${QUIZ_ROUTE}/${quiz.category.name}/${quiz.id}`, { replace: true });
+        // navigate(`/${QUIZZES_ROUTE}/${quiz.category.name}/${quiz.id}`, { replace: true });
         // resetForm(quiz);
         // toast.success("New quiz created");
       }
@@ -194,8 +195,8 @@ function CreateQuizQuestionPage() {
                         Answers
                       </FormLabel>
                       <div className="flex flex-col">
-                        {field.value?.map((_, i) => (
-                          <div className="flex gap items-center mt-2" key={i}>
+                        {field.value?.map((f, i) => (
+                          <div className="flex gap items-center mt-2" key={f.id}>
                             <span className="mr-2">
                               {i + 1}
                               &#46;
@@ -261,7 +262,6 @@ function CreateQuizQuestionPage() {
                     className="mt-4"
                     variant="outline"
                     type="submit"
-                    onClick={() => console.log(form.getValues(), form.formState.errors)}
                   >
                     <UploadCloud className="w-4 h-4 mr-1" />
                     Save

@@ -20,7 +20,7 @@ import { ResetIcon } from "@radix-ui/react-icons";
 import {
   UploadCloud,
 } from "lucide-react";
-import { ReactNode, useRef } from "react";
+import { ChangeEvent, ReactNode, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 import { toast } from "sonner";
@@ -28,6 +28,10 @@ import { z } from "zod";
 
 const formSchema = z.object({
   name: z.string(),
+  slug: z.string().regex(
+    /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
+    "Slug must contain only lowercase letters, numbers, and hyphens, and cannot start or end with a hyphen.",
+  ),
 });
 
 export type QuizFormValues = z.infer<typeof formSchema>;
@@ -45,6 +49,7 @@ function CreateQuizDialog({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: quiz ? quiz.name : "",
+      slug: quiz ? quiz.slug : "",
     },
   });
   const {
@@ -53,6 +58,11 @@ function CreateQuizDialog({
   const {
     createQuiz,
   } = useCreateQuiz(categoryName!);
+  const onChangeSlug = (e: ChangeEvent<HTMLInputElement>) => {
+    let i = e.target.value.toLowerCase();
+    i = i.replace(/[^\w-]|_/g, "").replace(/--+/, "-");
+    form.setValue("slug", i);
+  };
   const {
     updateQuiz,
   } = useUpdateQuiz(quiz?.id || "");
@@ -106,8 +116,29 @@ function CreateQuizDialog({
                   <FormControl>
                     <Input
                       disabled={isSubmitting}
-                      placeholder="JavaScript"
+                      placeholder="JavaScript Functions"
                       {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="slug"
+              key="slug"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    Slug
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={isSubmitting}
+                      placeholder="javascript-functions"
+                      {...field}
+                      onChange={onChangeSlug}
                     />
                   </FormControl>
                   <FormMessage />

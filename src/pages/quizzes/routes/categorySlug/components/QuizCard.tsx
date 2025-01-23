@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/common/shadcn/button";
 import { Skeleton } from "@/components/ui/common/shadcn/skeleton";
-import { QUIZ_ROUTE } from "@/lib/consts";
-import { QuizCategory } from "@/lib/types";
+import { QUIZZES_ROUTE } from "@/lib/consts";
+import { Quiz } from "@/lib/types";
 import {
   Pencil,
   Trash2,
@@ -11,20 +11,21 @@ import CreateQuizDialog from "./CreateQuizDialog";
 import DeleteQuizDialog from "./DeleteQuizDialog";
 
 interface QuizCardProps {
-  quiz: QuizCategory;
+  quiz: Quiz;
 }
 
 function QuizCard({
   quiz,
 }: QuizCardProps) {
   const {
-    categoryName,
+    domainSlug,
+    categorySlug,
   } = useParams();
   return (
     <div className="flex items-center justify-between py-3 px-5">
       <Link
         className="w-full"
-        to={`/${QUIZ_ROUTE}/${categoryName}/${quiz.name.toLowerCase()}`}
+        to={`/${domainSlug}/${QUIZZES_ROUTE}/${categorySlug}/${quiz.slug}`}
       >
         {quiz.name}
       </Link>

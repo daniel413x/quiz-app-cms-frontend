@@ -14,13 +14,10 @@ function MainLayout({
 }: MainLayoutProps) {
   return (
     <div
-      className="flex flex-col min-h-screen w-full font-roboto"
+      className="flex flex-col h-full w-full font-roboto"
       data-testid="main-layout"
     >
-      <div
-        className="fixed min-h-screen w-full bg-no-repeat bg-cover bg-center -z-10"
-      />
-      <div className="div flex flex-col min-h-screen md:flex-row">
+      <div className="div flex flex-col h-full md:flex-row">
         <Header />
         {noContainer ? children : (
           <div className="container mx-auto flex-1 py-10">

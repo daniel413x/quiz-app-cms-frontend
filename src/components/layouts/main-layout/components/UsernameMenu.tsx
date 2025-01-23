@@ -3,9 +3,11 @@ import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,
 } from "@/components/ui/common/shadcn/dropdown-menu";
 import { Separator } from "@/components/ui/common/shadcn/separator";
+import { useAuth0 } from "@auth0/auth0-react";
 import { CircleUserRound } from "lucide-react";
 
 function UsernameMenu() {
+  const { logout } = useAuth0();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
@@ -19,7 +21,7 @@ function UsernameMenu() {
         <DropdownMenuItem>
           <Button
             className="flex flex-1 font-bold bg-stone-500"
-            onClick={() => null}
+            onClick={() => logout()}
           >
             Log out
           </Button>

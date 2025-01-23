@@ -7,7 +7,7 @@ import {
   AlertDialogAction,
   AlertDialogTrigger,
 } from "@/components/ui/common/shadcn/alert-dialog";
-import { QUIZ_ROUTE } from "@/lib/consts";
+import { QUIZZES_ROUTE } from "@/lib/consts";
 import { ResetIcon } from "@radix-ui/react-icons";
 import {
   Check,
@@ -26,10 +26,11 @@ function CreateSuccessAlertDialog({
   children,
 }: CreateSuccessAlertDialogProps) {
   const {
-    quizName,
-    categoryName,
+    quizSlug,
+    categorySlug,
+    domainSlug,
   } = useParams();
-  const returnPath = `/${QUIZ_ROUTE}/${categoryName}/${quizName}`;
+  const returnPath = `/${domainSlug}/${QUIZZES_ROUTE}/${categorySlug}/${quizSlug}`;
   const navigate = useNavigate();
   const returnToQuiz = () => {
     navigate(returnPath);

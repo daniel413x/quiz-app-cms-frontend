@@ -1,39 +1,35 @@
 import { z } from "zod";
 
 /* eslint-disable no-use-before-define */
-interface Pagination {
-  page: number;
-  size: number;
-  pages: number;
-  count: number;
-  pageLimitReached: boolean;
-}
+// interface Pagination {
+//   page: number;
+//   size: number;
+//   pages: number;
+//   count: number;
+//   pageLimitReached: boolean;
+// }
 
 export type GETRes<T> = [T, number];
 export type GETManyRes<T> = [T[], number];
 
-export interface Car {
+export interface User {
   id: number;
-  vin: string;
-  year: number;
-  price: number;
-  mileage: number;
-  registrationNumber: string;
-  insurancePolicyNumber: string;
-  insuranceExpiration: Date;
-  registrationExpiration: Date;
-  lastMaintenanceDate: Date;
+  name: string;
+  auth0Id: number;
+  domain: Domain;
 }
 
 export interface Quiz {
   id: string;
   name: string;
+  slug: string;
   questions: QuizQuestion[];
 }
 
 export interface QuizCategory {
   id: string;
   name: string;
+  slug: string;
 }
 
 export interface QuizAnswer {
@@ -49,6 +45,13 @@ export interface QuizQuestion {
   question: string;
   answers: QuizAnswer[];
   category: QuizCategory;
+}
+
+export interface Domain {
+  id: string;
+  name: string;
+  userId: string;
+  slug: string;
 }
 
 export type QuizQuestionGETManyRes = GETManyRes<QuizQuestion>;

@@ -1,19 +1,15 @@
 import {
-  ComputerIcon,
-  Notebook,
-  NotebookPen,
   Pen,
-  Square,
 } from "lucide-react";
 import Meta from "@/components/misc/Meta";
 import PageHeader from "@/components/ui/common/PageHeader";
 import ContentFrame from "@/components/ui/common/ContentFrame";
 
-function CreateQuizPage() {
+function SettingsPage() {
   return (
-    <Meta title="pageHeaderText">
+    <Meta title="Settings">
       <main>
-        <PageHeader header="Create new quiz question" icon={<Pen />} />
+        <PageHeader header="Settings" icon={<Pen />} />
         <ContentFrame mt>
           qq
         </ContentFrame>
@@ -22,4 +18,4 @@ function CreateQuizPage() {
   );
 }
 
-export default CreateQuizPage;
+export default SettingsPage;

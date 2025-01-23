@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui/common/shadcn/button";
 import { Skeleton } from "@/components/ui/common/shadcn/skeleton";
-import { QUIZ_ROUTE } from "@/lib/consts";
+import { QUIZZES_ROUTE } from "@/lib/consts";
 import { QuizCategory } from "@/lib/types";
 import {
   Pencil,
   Trash2,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import CreateQuizCategoryDialog from "./CreateQuizCategoryDialog";
 import DeleteQuizCategoryDialog from "./DeleteQuizCategoryDialog";
 
@@ -17,11 +17,14 @@ interface QuizCategoryCardProps {
 function QuizCategoryCard({
   quizCategory,
 }: QuizCategoryCardProps) {
+  const {
+    domainSlug,
+  } = useParams();
   return (
     <div className="flex items-center justify-between py-3 px-5">
       <Link
         className="w-full"
-        to={`/${QUIZ_ROUTE}/${quizCategory.name.toLowerCase()}`}
+        to={`/${domainSlug}/${QUIZZES_ROUTE}/${quizCategory.slug}`}
       >
         {quizCategory.name}
       </Link>

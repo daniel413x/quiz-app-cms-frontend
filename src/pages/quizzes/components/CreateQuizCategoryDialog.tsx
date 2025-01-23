@@ -20,13 +20,17 @@ import { ResetIcon } from "@radix-ui/react-icons";
 import {
   UploadCloud,
 } from "lucide-react";
-import { ReactNode, useRef } from "react";
+import { ChangeEvent, ReactNode, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
 const formSchema = z.object({
   name: z.string(),
+  slug: z.string().regex(
+    /^[a-z0-9]+(?:-[a-z0-9]+)*$/,
+    "Slug must contain only lowercase letters, numbers, and hyphens, and cannot start or end with a hyphen.",
+  ),
 });
 
 export type QuizCategoryFormValues = z.infer<typeof formSchema>;
@@ -44,11 +48,17 @@ function CreateQuizCategoryDialog({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: quizCategory ? quizCategory.name : "",
+      slug: quizCategory ? quizCategory.slug : "",
     },
   });
   const {
     createQuizCategory,
   } = useCreateQuizCategory();
+  const onChangeSlug = (e: ChangeEvent<HTMLInputElement>) => {
+    let i = e.target.value.toLowerCase();
+    i = i.replace(/[^\w-]|_/g, "").replace(/--+/, "-");
+    form.setValue("slug", i);
+  };
   const {
     updateQuizCategory,
   } = useUpdateQuizCategory(quizCategory?.id || "");
@@ -88,7 +98,6 @@ function CreateQuizCategoryDialog({
             {title}
           </DialogTitle>
         </DialogHeader>
-
         <Form {...form}>
           <form className="flex flex-col" onSubmit={form.handleSubmit(onSubmit)}>
             <FormField
@@ -103,8 +112,29 @@ function CreateQuizCategoryDialog({
                   <FormControl>
                     <Input
                       disabled={isSubmitting}
-                      placeholder="Mathematics"
+                      placeholder="Mathematics II"
                       {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="slug"
+              key="slug"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    Slug
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={isSubmitting}
+                      placeholder="mathematics-ii"
+                      {...field}
+                      onChange={onChangeSlug}
                     />
                   </FormControl>
                   <FormMessage />

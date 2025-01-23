@@ -21,3 +21,8 @@ export const errorCatch = (error: any): string => {
   }
   return error.message;
 };
+
+export const makeSlug = (string: string) => {
+  const id = string.toLowerCase().split(" ").filter(Boolean).join("-");
+  return id;
+};

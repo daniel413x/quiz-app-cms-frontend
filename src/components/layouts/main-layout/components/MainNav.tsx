@@ -1,14 +1,17 @@
 import {
   Link, useLocation,
+  useParams,
 } from "react-router-dom";
 import {
   FEEDBACK_ROUTE,
-  QUIZ_ROUTE,
+  QUIZZES_ROUTE,
+  SETTINGS_ROUTE,
   STATS_ROUTE,
 } from "@/lib/consts";
 import {
   BarChart,
   List,
+  Settings,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import useIsAuthenticated from "@/lib/hooks/useIsAuthenticated";
@@ -16,7 +19,7 @@ import { ChatBubbleIcon } from "@radix-ui/react-icons";
 
 const links = [
   {
-    to: `/${QUIZ_ROUTE}`,
+    to: `/${QUIZZES_ROUTE}`,
     label: "Quizzes",
     icon: <List className="w-5 h-5" strokeWidth={1.25} />,
   },
@@ -28,7 +31,12 @@ const links = [
   {
     to: `/${FEEDBACK_ROUTE}`,
     label: "Feedback (0)",
-    icon: <ChatBubbleIcon className="w-5 h-5" strokeWidth={1.25} />,
+    icon: <ChatBubbleIcon className="w-5 h-5" />,
+  },
+  {
+    to: `/${SETTINGS_ROUTE}`,
+    label: "Settings",
+    icon: <Settings className="w-5 h-5" strokeWidth={1.25} />,
   },
 ];
 
@@ -39,6 +47,9 @@ interface MainNavProps {
 function MainNav({
   mobile,
 }: MainNavProps) {
+  const {
+    domainSlug,
+  } = useParams();
   const location = useLocation();
   const { pathname } = location;
   const py = 2;
@@ -52,7 +63,7 @@ function MainNav({
       {links.map(({ to, icon, label }) => (
         <li key={to}>
           <Link
-            to={to}
+            to={`/${domainSlug}${to}`}
             // don't resize parent
             className={cn(` relative group flex items-center gap-2 py-${py} -my-${py} px-3.5 rounded-md w-full`, {
               "bg-stone-500 text-white": to === pathname,
