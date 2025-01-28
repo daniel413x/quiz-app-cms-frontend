@@ -5,7 +5,6 @@ import {
 import Meta from "@/components/misc/Meta";
 import PageHeader from "@/components/ui/common/PageHeader";
 import ContentFrame from "@/components/ui/common/ContentFrame";
-import { useGetQuiz } from "@/lib/api/QuizApi";
 import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/common/shadcn/button";
 import { CREATE_QUIZ_QUESTION_ROUTE, QUIZZES_ROUTE } from "@/lib/consts";
@@ -22,7 +21,6 @@ function QuizPage() {
     data: quizQuestions,
     isLoading: isLoadingGET,
   } = useGetQuizQuestions();
-  console.log(quizQuestions);
   const navigate = useNavigate();
   const toCreatePage = () => navigate(`/${domainSlug}/${QUIZZES_ROUTE}/${categorySlug}/${quizSlug}/${CREATE_QUIZ_QUESTION_ROUTE}`);
   return (

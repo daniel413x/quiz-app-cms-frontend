@@ -1,7 +1,8 @@
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import logo from "@/assets/logo.png";
 import { DASHBOARD_ROUTE } from "@/lib/consts";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useGetDomain } from "@/lib/api/DomainApi";
 import MobileNav from "./MobileNav";
 import MainNav from "./MainNav";
 import UsernameMenu from "./UsernameMenu";
@@ -9,8 +10,8 @@ import UsernameMenu from "./UsernameMenu";
 function Header() {
   const { isAuthenticated } = useAuth0();
   const {
-    domainSlug,
-  } = useParams();
+    domain,
+  } = useGetDomain();
   return (
     <header
       className="border-b-gray-500 py-6 bg-white md:[height:unset] h-[86px] md:border-r-2 md:border-b-0 border-b-2 border-black"
@@ -19,7 +20,7 @@ function Header() {
         <div className="flex flex-col">
           <Link
             className="text-3xl font-bold tracking-light text-gray-500 "
-            to={isAuthenticated ? `/${domainSlug}/${DASHBOARD_ROUTE}` : "/"}
+            to={isAuthenticated && domain ? `/${domain.slug}/${DASHBOARD_ROUTE}` : "/"}
           >
             <img
               src={logo}

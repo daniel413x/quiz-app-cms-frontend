@@ -50,6 +50,7 @@ export interface QuizQuestion {
 export interface Domain {
   id: string;
   name: string;
+  private: boolean;
   userId: string;
   slug: string;
 }

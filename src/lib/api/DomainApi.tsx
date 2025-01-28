@@ -4,18 +4,25 @@ import { toast } from "sonner";
 import { errorCatch } from "../utils";
 import { DOMAIN_ROUTE } from "../consts";
 import { Domain } from "../types";
+import queryClient from "./queryClient";
+import { useGetUser } from "./UserApi";
 
 const API_BASE_URL = import.meta.env.VITE_APP_API_URL;
 
+const GET_DOMAIN = "getDomain";
+
 export const useGetDomain = () => {
-  const { getAccessTokenSilently, user, isAuthenticated } = useAuth0();
+  // !!user must be added to enabled: for this composite hook to work
+  const {
+    user,
+  } = useGetUser();
+  const { getAccessTokenSilently, isAuthenticated } = useAuth0();
   const getDomainReq: () => Promise<Domain> = async () => {
-    if (!user?.sub) {
+    if (!user) {
       throw new Error("user object was not defined");
     }
     const accessToken = await getAccessTokenSilently();
-    const id = encodeURIComponent(user.sub);
-    const res = await fetch(`${API_BASE_URL}/${DOMAIN_ROUTE}/by-auth0-id/${id}`, {
+    const res = await fetch(`${API_BASE_URL}/${DOMAIN_ROUTE}/${user.domain.id}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -28,10 +35,10 @@ export const useGetDomain = () => {
     return res.json();
   };
   const { data: fetchedDomain, isLoading, error } = useQuery(
-    "getDomain",
+    [GET_DOMAIN],
     getDomainReq,
     {
-      enabled: isAuthenticated, // Only run the query if the user is authenticated
+      enabled: isAuthenticated && !!user, // Only run the query if the user is authenticated
     },
   );
   if (error) {
@@ -72,14 +79,13 @@ export const useCreateDomain = () => {
 
 type UpdateDomainReq = Pick<Domain, "name">;
 
-export const useUpdateDomain = () => {
+export const useUpdateDomain = (id: string) => {
   const { getAccessTokenSilently, user } = useAuth0();
   const updateDomainReq = async (formData: UpdateDomainReq) => {
     if (!user?.sub) {
       throw new Error("user object was not defined");
     }
     const accessToken = await getAccessTokenSilently();
-    const id = encodeURIComponent(user.sub);
     const res = await fetch(`${API_BASE_URL}/${DOMAIN_ROUTE}/${id}`, {
       method: "PATCH",
       headers: {
@@ -89,25 +95,18 @@ export const useUpdateDomain = () => {
       body: JSON.stringify(formData),
     });
     if (!res.ok) {
-      if (await res.text() === "Invalid address") {
-        throw new Error("Could not validate provided address, please try again");
-      } else {
-        throw new Error("Failed to update user");
-      }
+      throw new Error("Failed to update domain");
     }
   };
   const {
     mutateAsync: updateDomain,
     isLoading,
     isSuccess,
-    error,
-  } = useMutation(updateDomainReq);
-  if (isSuccess) {
-    toast.success("Domain profile updated!");
-  }
-  if (error) {
-    toast.error(errorCatch(error));
-  }
+  } = useMutation(updateDomainReq, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(GET_DOMAIN);
+    },
+  });
   return {
     updateDomain,
     isLoading,

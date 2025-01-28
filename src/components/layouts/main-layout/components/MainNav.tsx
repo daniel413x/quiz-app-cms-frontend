@@ -1,6 +1,5 @@
 import {
   Link, useLocation,
-  useParams,
 } from "react-router-dom";
 import {
   FEEDBACK_ROUTE,
@@ -16,6 +15,7 @@ import {
 import { cn } from "@/lib/utils";
 import useIsAuthenticated from "@/lib/hooks/useIsAuthenticated";
 import { ChatBubbleIcon } from "@radix-ui/react-icons";
+import { useGetDomain } from "@/lib/api/DomainApi";
 
 const links = [
   {
@@ -47,13 +47,13 @@ interface MainNavProps {
 function MainNav({
   mobile,
 }: MainNavProps) {
-  const {
-    domainSlug,
-  } = useParams();
   const location = useLocation();
   const { pathname } = location;
   const py = 2;
   const isAuthenticated = useIsAuthenticated();
+  const {
+    domain,
+  } = useGetDomain();
   return !isAuthenticated ? null : (
     <ul className={cn("flex flex-col", {
       "": !mobile,
@@ -63,7 +63,7 @@ function MainNav({
       {links.map(({ to, icon, label }) => (
         <li key={to}>
           <Link
-            to={`/${domainSlug}${to}`}
+            to={`/${domain?.slug}${to}`}
             // don't resize parent
             className={cn(` relative group flex items-center gap-2 py-${py} -my-${py} px-3.5 rounded-md w-full`, {
               "bg-stone-500 text-white": to === pathname,

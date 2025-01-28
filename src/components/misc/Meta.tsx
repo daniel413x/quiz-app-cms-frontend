@@ -7,7 +7,7 @@ export interface MetaProps {
   children: ReactNode;
 }
 
-function createTitleString(string: string) { return `${string} | Warehouse Admins`; }
+function createTitleString(string: string) { return `${string} | Quiz Admins`; }
 
 function Meta({
   title,

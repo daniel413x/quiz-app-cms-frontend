@@ -26,8 +26,9 @@ function DomainRoute() {
       navigate(`/${DOMAIN_ERROR_ROUTE}`);
     }
   }, [domainError, userError]);
-  const mismatchedSlug = domainSlug !== user?.domain?.slug;
-  return mismatchedSlug || !domain ? "Fetching domain..." : <Outlet />;
+  // the user can type any domain slug they want to the address bar, but if the domainSlug does not match that of the slug of the domain obtained via the token-validated process, access will be denied
+  const mismatchedDomain = domain?.slug !== domainSlug;
+  return mismatchedDomain || !domain ? "Fetching domain..." : <Outlet />;
 }
 
 export default DomainRoute;

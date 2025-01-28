@@ -14,7 +14,7 @@ export const useGetUser = () => {
       throw new Error("user object was not defined");
     }
     const accessToken = await getAccessTokenSilently();
-    const res = await fetch(`${API_BASE_URL}/${USER_ROUTE}/by-token`, {
+    const res = await fetch(`${API_BASE_URL}/${USER_ROUTE}/${user.sub}`, {
       method: "GET",
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -24,6 +24,7 @@ export const useGetUser = () => {
     if (!res.ok) {
       throw new Error("failed to get user");
     }
+    console.log("qqqqq");
     return res.json();
   };
   const { data: fetchedUser, isLoading, error } = useQuery(
