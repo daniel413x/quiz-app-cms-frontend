@@ -1,4 +1,3 @@
-import "katex/dist/katex.min.css";
 import "./TipTapEditor.styles.scss";
 
 import { Editor, EditorContent, useEditor } from "@tiptap/react";
