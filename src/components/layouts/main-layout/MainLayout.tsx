@@ -17,10 +17,10 @@ function MainLayout({
       className="flex flex-col h-full w-full font-roboto"
       data-testid="main-layout"
     >
-      <div className="div flex flex-col h-full md:flex-row">
+      <div className="div flex flex-col h-full md:flex-row 2xl:self-center">
         <Header />
         {noContainer ? children : (
-          <div className="container mx-auto flex-1 py-10">
+          <div className="container mx-auto flex-1 py-10 2xl:w-[1300px] ">
             {children}
           </div>
         )}

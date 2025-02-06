@@ -43,7 +43,7 @@ function App() {
             <Route
               path="/"
               element={(
-                <MainLayout noContainer>
+                <MainLayout>
                   <RootPage />
                 </MainLayout>
             )}
@@ -51,7 +51,9 @@ function App() {
             <Route
               path={`/${AUTH_CALLBACK_ROUTE}`}
               element={(
-                <AuthCallbackPage />
+                <MainLayout>
+                  <AuthCallbackPage />
+                </MainLayout>
             )}
             />
             <Route

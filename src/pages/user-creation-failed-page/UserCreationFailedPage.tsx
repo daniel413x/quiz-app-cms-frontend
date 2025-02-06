@@ -1,5 +1,5 @@
-import logo from "@/assets/logo.png";
-import error from "@/assets/domain-error-page.png";
+import logo from "@/assets/images/logo.png";
+import error from "@/assets/images/domain-error-page.png";
 import { Link } from "react-router-dom";
 
 function UserCreationFailedPage() {

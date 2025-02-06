@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import logo from "@/assets/logo.png";
+import logo from "@/assets/images/logo.png";
 import { DASHBOARD_ROUTE } from "@/lib/consts";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useGetDomain } from "@/lib/api/DomainApi";
@@ -14,7 +14,7 @@ function Header() {
   } = useGetDomain();
   return (
     <header
-      className="border-b-gray-500 py-6 bg-white md:[height:unset] h-[86px] md:border-r-2 md:border-b-0 border-b-2 border-black"
+      className="border-b-gray-500 py-6 bg-white md:[height:unset] h-[86px] md:border-r-2 md:border-b-0 border-b-2 border-black 2xl:border-l-2"
     >
       <div className="container flex flex-row md:flex-col mx-auto justify-between  h-full">
         <div className="flex flex-col">

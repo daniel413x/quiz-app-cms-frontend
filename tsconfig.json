@@ -4,7 +4,11 @@
     "module": "esnext",
     "moduleResolution": "bundler",
     "useDefineForClassFields": true,
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "lib": [
+      "ES2020",
+      "DOM",
+      "DOM.Iterable"
+    ],
     "skipLibCheck": true,
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
@@ -13,13 +17,24 @@
     "esModuleInterop": true,
     "jsx": "react-jsx",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": [
+        "./src/*"
+      ]
     },
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src/**/*", "**/*.ts", "**/*.tsx"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "include": [
+    "src/**/*",
+    "**/*.ts",
+    "**/*.tsx",
+    "svg.d.ts"
+  ],
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ]
 }

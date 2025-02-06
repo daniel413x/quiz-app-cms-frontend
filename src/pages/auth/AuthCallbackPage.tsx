@@ -34,7 +34,7 @@ function AuthCallbackPage() {
     return () => clearTimeout(timeoutId);
   }, [error, user]);
   return (
-    <div className="w-full h-full flex items-center justify-center"><LoadingSquares /></div>
+    <main className="w-full h-full flex items-center justify-center"><LoadingSquares /></main>
   );
 }
 
