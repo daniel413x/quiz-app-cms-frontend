@@ -24,7 +24,6 @@ export const useGetUser = () => {
     if (!res.ok) {
       throw new Error("failed to get user");
     }
-    console.log("qqqqq");
     return res.json();
   };
   const { data: fetchedUser, isLoading, error } = useQuery(

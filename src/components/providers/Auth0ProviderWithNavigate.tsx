@@ -18,7 +18,7 @@ function Auth0ProviderWithNavigate({
   if (!domain || !clientId || !redirectUri || !audience) {
     throw new Error("some Auth0 environment variables were missing");
   }
-  // create user on return to app if none exists in mongo
+  // create user on return to app if none exists in db
   const onRedirectCallback = (appState?: AppState) => {
     navigate(appState?.returnTo || `/${AUTH_CALLBACK_ROUTE}`);
   };

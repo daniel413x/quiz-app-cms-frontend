@@ -34,7 +34,7 @@ function QuizCategoryPage() {
                 Create Quiz
               </Button>
             </CreateQuizDialog>
-            <ul className="">
+            <ul>
               {isLoadingGET ? "LOADING" : data![0].map((q) => (
                 <li key={q.id}>
                   <QuizCard quiz={q} />

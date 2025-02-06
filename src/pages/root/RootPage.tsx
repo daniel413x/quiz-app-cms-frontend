@@ -3,23 +3,22 @@ import { User } from "lucide-react";
 import Meta from "@/components/misc/Meta";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useNavigate } from "react-router-dom";
-import { DASHBOARD_ROUTE } from "@/lib/consts";
+import { AUTH_CALLBACK_ROUTE } from "@/lib/consts";
 import { useEffect } from "react";
 
 function RootPage() {
-  const { loginWithRedirect, isAuthenticated } = useAuth0();
+  const { loginWithPopup, isAuthenticated } = useAuth0();
   const navigate = useNavigate();
   const onClick = () => {
-    console.log(isAuthenticated);
     if (isAuthenticated) {
-      navigate(`/${DASHBOARD_ROUTE}`);
+      navigate(`/${AUTH_CALLBACK_ROUTE}`);
     } else {
-      loginWithRedirect();
+      loginWithPopup();
     }
   };
   useEffect(() => {
     if (isAuthenticated) {
-      navigate(`/${DASHBOARD_ROUTE}`);
+      navigate(`/${AUTH_CALLBACK_ROUTE}`);
     }
   }, [isAuthenticated]);
   return (
