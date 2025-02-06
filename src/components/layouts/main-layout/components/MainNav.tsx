@@ -21,12 +21,12 @@ const links = [
   {
     to: `/${QUIZZES_ROUTE}`,
     label: "Quizzes",
-    icon: <List className="w-5 h-5" strokeWidth={1.25} />,
+    icon: <List className="w-5 h-5" strokeWidth={2} />,
   },
   {
     to: `/${STATS_ROUTE}`,
     label: "Stats",
-    icon: <BarChart className="w-5 h-5" strokeWidth={1.25} />,
+    icon: <BarChart className="w-5 h-5" strokeWidth={2} />,
   },
   {
     to: `/${FEEDBACK_ROUTE}`,
@@ -36,7 +36,7 @@ const links = [
   {
     to: `/${SETTINGS_ROUTE}`,
     label: "Settings",
-    icon: <Settings className="w-5 h-5" strokeWidth={1.25} />,
+    icon: <Settings className="w-5 h-5" strokeWidth={2} />,
   },
 ];
 
@@ -65,7 +65,7 @@ function MainNav({
           <Link
             to={`/${domain?.slug}${to}`}
             // don't resize parent
-            className={cn(` relative group flex items-center gap-2 py-${py} -my-${py} px-3.5 rounded-md w-full`, {
+            className={cn(`relative group flex items-center gap-2 font-medium py-${py} -my-${py} px-3.5 rounded-md w-full`, {
               "bg-stone-500 text-white": to === pathname,
               "text-black hover:text-stone-500": to !== pathname,
             })}

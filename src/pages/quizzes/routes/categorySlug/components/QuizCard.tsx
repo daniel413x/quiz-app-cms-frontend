@@ -31,12 +31,12 @@ function QuizCard({
       </Link>
       <div className="flex gap-2">
         <CreateQuizDialog quiz={quiz}>
-          <Button className="flex gap-1" variant="outline">
+          <Button className="flex gap-1" variant="outlineBold">
             <Pencil />
           </Button>
         </CreateQuizDialog>
         <DeleteQuizDialog quiz={quiz}>
-          <Button className="flex gap-1" variant="outline">
+          <Button className="flex gap-1" variant="outlineBold">
             <Trash2 />
           </Button>
         </DeleteQuizDialog>

@@ -4,7 +4,7 @@ import qs from "query-string";
 import { useSearchParams } from "react-router-dom";
 import { QuizCategoryFormValues } from "@/pages/quizzes/components/CreateQuizCategoryDialog";
 import { useAuth0 } from "@auth0/auth0-react";
-import { errorCatch } from "../utils";
+import { createFakeDelay, errorCatch } from "../utils";
 import { QUIZ_CATEGORY_API_ROUTE } from "../consts";
 import { QuizCategory, QuizCategoryGETManyRes } from "../types";
 import queryClient from "./queryClient";
@@ -40,10 +40,7 @@ export const useGetQuizCategories = () => {
     if (!res.ok) {
       throw new Error("Failed to get categories");
     }
-    const fakeDelay = new Promise((resolve) => {
-      setTimeout(resolve, 150);
-    });
-    const results = await Promise.all([res, fakeDelay]);
+    const results = await createFakeDelay(res);
     return results[0].json();
   };
   const {

@@ -87,6 +87,7 @@ function SettingsPage() {
                     </FormLabel>
                     <FormControl>
                       <Input
+                        className="border-input-dark"
                         disabled={isSubmitting}
                         placeholder="My Quizzes"
                         {...field}
@@ -104,10 +105,11 @@ function SettingsPage() {
                   <FormItem>
                     <FormLabel>
                       Slug
-                      <LabelText string="alphanumeric" />
+                      <LabelText string="alphanumeric-hyphen-separated" />
                     </FormLabel>
                     <FormControl>
                       <Input
+                        className="border-input-dark"
                         disabled={isSubmitting}
                         placeholder="my-quizzes"
                         {...field}
@@ -130,6 +132,7 @@ function SettingsPage() {
                       </FormLabel>
                       <FormControl>
                         <Checkbox
+                          className="border-input-dark"
                           checked={field.value}
                           onCheckedChange={field.onChange}
                         />
@@ -137,8 +140,9 @@ function SettingsPage() {
                     </FormItem>
                   )}
                 />
-                <Button className="flex gap-1 mt-4" variant="outline" type="submit">
+                <Button className="flex gap-1 mt-4" variant="outlineBold" type="submit">
                   <FilePen className="w-4 h-4" />
+                  Save
                 </Button>
               </div>
             </form>

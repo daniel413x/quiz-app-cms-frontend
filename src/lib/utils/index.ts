@@ -26,3 +26,12 @@ export const makeSlug = (string: string) => {
   const id = string.toLowerCase().split(" ").filter(Boolean).join("-");
   return id;
 };
+
+export const createFakeDelay = async (res: Response) => {
+  const ms = Math.floor(Math.random() * (150 - 50) + 50);
+  const fakeDelay = new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+  const results = await Promise.all([res, fakeDelay]);
+  return results;
+};

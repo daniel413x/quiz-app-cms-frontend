@@ -39,18 +39,18 @@ function DeleteQuizQuestionDialog({
             Delete Quiz Question
           </AlertDialogTitle>
         </AlertDialogHeader>
-        <div className="flex gap-1 text-orange-700">
-          <QuestionMarkCircledIcon className="w-8 h-8 shrink-0" />
-          <span className="font-semibold">
-            Are you sure you want to delete the quiz question
-            {" "}
-            <span className="italic text-sm">
-              {`${quizQuestion.question}`}
+        <div className="flex flex-col gap-2 text-orange-700">
+          <div className="flex items-center gap-2 ">
+            <QuestionMarkCircledIcon className="w-8 h-8 shrink-0" />
+            <span className="font-semibold">
+              Are you sure you want to delete this quiz question?
             </span>
-            ?
+          </div>
+          <span className="italic text-sm max-w-[300px] m-auto">
+            {`/${quizQuestion.question}`}
           </span>
         </div>
-        <div className="flex gap-1 text-orange-700">
+        <div className="flex gap-2 items-center text-orange-700">
           <ExclamationTriangleIcon className="w-8 h-8" />
           This is an irreversible action
         </div>

@@ -31,13 +31,13 @@ function ClearFormDialog({
             Clear form
           </AlertDialogTitle>
         </AlertDialogHeader>
-        <div className="flex gap-1 text-orange-700">
+        <div className="flex items-center gap-2 text-orange-700">
           <QuestionMarkCircledIcon className="w-8 h-8 shrink-0" />
           <span className="font-semibold">
             Are you sure you want to clear the form?
           </span>
         </div>
-        <div className="flex gap-1 text-orange-700">
+        <div className="flex gap-2 text-orange-700">
           <ExclamationTriangleIcon className="w-8 h-8" />
           This is an irreversible action
         </div>

@@ -23,9 +23,10 @@ import {
   FormField, FormItem, FormLabel, FormMessage, Form,
   FormControl,
 } from "@/components/ui/common/shadcn/form";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { Checkbox } from "@/components/ui/common/shadcn/checkbox";
 import { useCreateQuizQuestion, useGetQuizQuestion, useUpdateQuizQuestion } from "@/lib/api/QuizQuestionApi";
+import LoadingSquares from "@/components/ui/common/LoadingSquares";
 import ClearFormDialog from "./components/ClearFormDialog";
 import CreateSuccessDialog from "./components/CreateSuccessDialog";
 import TipTapEditor from "./components/TipTapEditor";
@@ -57,7 +58,6 @@ function CreateQuizQuestionPage() {
   } = useParams();
   const createSuccessDialogTriggerRef = useRef<HTMLButtonElement>(null);
   const isCreatePage = quizQuestionId === CREATE_QUIZ_QUESTION_ROUTE;
-  const [loading, setLoading] = useState<boolean>(!isCreatePage);
   const initializedQuizAnswer = {
     id: uuid(),
     answer: "<p>Write your answer here</p>",
@@ -80,11 +80,11 @@ function CreateQuizQuestionPage() {
   };
   const {
     fetchedQuiz,
+    isLoading: isLoadingGET,
   } = useGetQuizQuestion(isCreatePage ? null : quizQuestionId);
   useEffect(() => {
     if (fetchedQuiz) {
       resetForm(fetchedQuiz);
-      setLoading(false);
     }
   }, [fetchedQuiz]);
   // const {
@@ -163,112 +163,114 @@ function CreateQuizQuestionPage() {
                 {wereSearchResults ? "Return to search results" : "Exit"}
               </Button>
             </div>
-            <Form {...form}>
-              <form className="flex flex-col" onSubmit={form.handleSubmit(onSubmit)}>
-                <FormField
-                  control={form.control}
-                  name="question"
-                  key="question"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-2xl">
-                        Question
-                      </FormLabel>
-                      <FormControl>
-                        {loading ? null : (
+            {isLoadingGET ? (
+              <div className="mt-6 mx-auto">
+                <LoadingSquares />
+              </div>
+            ) : (
+              <Form {...form}>
+                <form className="flex flex-col" onSubmit={form.handleSubmit(onSubmit)}>
+                  <FormField
+                    control={form.control}
+                    name="question"
+                    key="question"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-2xl">
+                          Question
+                        </FormLabel>
+                        <FormControl>
                           <FormControl>
                             <TipTapEditor field={field} className="mt-2" />
                           </FormControl>
-                        )}
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="answers"
-                  key="answers"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-col">
-                      <FormLabel className="text-2xl">
-                        Answers
-                      </FormLabel>
-                      <div className="flex flex-col">
-                        {field.value?.map((f, i) => (
-                          <div className="flex gap items-center mt-2" key={f.id}>
-                            <span className="mr-2">
-                              {i + 1}
-                              &#46;
-                            </span>
-                            {loading ? null : (
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="answers"
+                    key="answers"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-col">
+                        <FormLabel className="text-2xl">
+                          Answers
+                        </FormLabel>
+                        <div className="flex flex-col">
+                          {field.value?.map((f, i) => (
+                            <div className="flex gap items-center mt-2" key={f.id}>
+                              <span className="mr-2">
+                                {i + 1}
+                                &#46;
+                              </span>
                               <FormControl>
                                 <TipTapEditor field={field} i={i} />
                               </FormControl>
-                            )}
-                            <div className="flex items-center gap-4 ml-6">
-                              <Checkbox
-                                className="w-6 h-6"
-                                checked={answers[i].correctAnswer}
-                                onClick={() => markCorrectAnswer(answers[i].id)}
-                              />
-                              <Button
-                                className="text-red-500"
-                                variant="blank"
-                                size="icon"
-                                onClick={() => removeAnswer(i)}
-                                type="button"
-                                disabled={answers.length === 1}
-                              >
-                                <Delete className="w-8 h-10" strokeWidth="0.8" />
-                              </Button>
+                              <div className="flex items-center gap-4 ml-6">
+                                <Checkbox
+                                  className="w-6 h-6"
+                                  checked={answers[i].correctAnswer}
+                                  onClick={() => markCorrectAnswer(answers[i].id)}
+                                />
+                                <Button
+                                  className="text-red-500"
+                                  variant="blank"
+                                  size="icon"
+                                  onClick={() => removeAnswer(i)}
+                                  type="button"
+                                  disabled={answers.length === 1}
+                                >
+                                  <Delete className="w-8 h-10" strokeWidth="0.8" />
+                                </Button>
+                              </div>
                             </div>
-                          </div>
-                        ))}
-                        <FormMessage />
-                      </div>
-                    </FormItem>
-                  )}
-                />
-                <Button
-                  variant="outline"
-                  type="button"
-                  onClick={addAnswer}
-                >
-                  <Plus className="w-4 h-4 mr-0.5" />
-                  Add answer
-                </Button>
-                <div className="flex self-end gap-2">
-                  <ClearFormDialog resetForm={resetForm}>
+                          ))}
+                          <FormMessage />
+                        </div>
+                      </FormItem>
+                    )}
+                  />
+                  <Button
+                    variant="outline"
+                    type="button"
+                    onClick={addAnswer}
+                  >
+                    <Plus className="w-4 h-4 mr-0.5" />
+                    Add answer
+                  </Button>
+                  <div className="flex self-end gap-2">
+                    <ClearFormDialog resetForm={resetForm}>
+                      <Button
+                        className="mt-4"
+                        variant="outline"
+                      >
+                        <X className="w-4 h-4 mr-1" />
+                        Reset
+                      </Button>
+                    </ClearFormDialog>
+                    <CreateSuccessDialog
+                      resetForm={resetForm}
+                    >
+                      <Button
+                        className="mt-4 hidden"
+                        variant="outline"
+                        type="button"
+                        ref={createSuccessDialogTriggerRef}
+                      />
+                    </CreateSuccessDialog>
                     <Button
                       className="mt-4"
                       variant="outline"
+                      type="submit"
                     >
-                      <X className="w-4 h-4 mr-1" />
-                      Reset
+                      <UploadCloud className="w-4 h-4 mr-1" />
+                      Save
                     </Button>
-                  </ClearFormDialog>
-                  <CreateSuccessDialog
-                    resetForm={resetForm}
-                  >
-                    <Button
-                      className="mt-4 hidden"
-                      variant="outline"
-                      type="button"
-                      ref={createSuccessDialogTriggerRef}
-                    />
-                  </CreateSuccessDialog>
-                  <Button
-                    className="mt-4"
-                    variant="outline"
-                    type="submit"
-                  >
-                    <UploadCloud className="w-4 h-4 mr-1" />
-                    Save
-                  </Button>
-                </div>
-              </form>
-            </Form>
+                  </div>
+                </form>
+              </Form>
+            )}
           </div>
         </ContentFrame>
       </main>

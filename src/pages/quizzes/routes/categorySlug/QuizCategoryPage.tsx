@@ -29,7 +29,7 @@ function QuizCategoryPage() {
           <div className="flex flex-col">
             <CreateQuizDialog>
               <Button
-                variant="outline"
+                variant="outlineBold"
                 className="flex items-center gap-1 py-6 px-8"
               >
                 <Plus />

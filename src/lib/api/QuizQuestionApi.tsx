@@ -4,7 +4,7 @@ import qs from "query-string";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { QuizQuestionFormValues } from "@/pages/quizzes/routes/categorySlug/quizName/create/CreateQuizQuestionPage";
-import { errorCatch } from "../utils";
+import { createFakeDelay, errorCatch } from "../utils";
 import { QUIZ_QUESTION_API_ROUTE } from "../consts";
 import { QuizQuestion, QuizQuestionGETManyRes } from "../types";
 import queryClient from "./queryClient";
@@ -42,10 +42,7 @@ export const useGetQuizQuestions = () => {
     if (!res.ok) {
       throw new Error("Failed to get quizzes");
     }
-    const fakeDelay = new Promise((resolve) => {
-      setTimeout(resolve, 150);
-    });
-    const results = await Promise.all([res, fakeDelay]);
+    const results = await createFakeDelay(res);
     return results[0].json();
   };
   const {
@@ -73,7 +70,8 @@ export const useGetQuizQuestion = (id?: string | null) => {
     if (!res.ok) {
       throw new Error(`Failed to get quiz with id ${id}`);
     }
-    return res.json();
+    const results = await createFakeDelay(res);
+    return results[0].json();
   };
   const {
     data: fetchedQuiz, isLoading, isError, error,
