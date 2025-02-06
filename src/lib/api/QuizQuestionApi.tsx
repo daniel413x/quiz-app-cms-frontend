@@ -42,7 +42,11 @@ export const useGetQuizQuestions = () => {
     if (!res.ok) {
       throw new Error("Failed to get quizzes");
     }
-    return res.json();
+    const fakeDelay = new Promise((resolve) => {
+      setTimeout(resolve, 150);
+    });
+    const results = await Promise.all([res, fakeDelay]);
+    return results[0].json();
   };
   const {
     data: fetchedQuizQuestions, isLoading, isError, error,

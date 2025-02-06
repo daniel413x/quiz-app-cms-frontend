@@ -40,7 +40,11 @@ export const useGetQuizCategories = () => {
     if (!res.ok) {
       throw new Error("Failed to get categories");
     }
-    return res.json();
+    const fakeDelay = new Promise((resolve) => {
+      setTimeout(resolve, 150);
+    });
+    const results = await Promise.all([res, fakeDelay]);
+    return results[0].json();
   };
   const {
     data: fetchedQuizCategories, isLoading, isError, error,

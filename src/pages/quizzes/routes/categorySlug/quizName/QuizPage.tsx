@@ -9,6 +9,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/common/shadcn/button";
 import { CREATE_QUIZ_QUESTION_ROUTE, QUIZZES_ROUTE } from "@/lib/consts";
 import { useGetQuizQuestions } from "@/lib/api/QuizQuestionApi";
+import LoadingSquares from "@/components/ui/common/LoadingSquares";
 import QuizQuestionCard from "./components/QuizQuestionCard";
 
 function QuizPage() {
@@ -24,9 +25,9 @@ function QuizPage() {
   const navigate = useNavigate();
   const toCreatePage = () => navigate(`/${domainSlug}/${QUIZZES_ROUTE}/${categorySlug}/${quizSlug}/${CREATE_QUIZ_QUESTION_ROUTE}`);
   return (
-    <Meta title="Quiz page">
+    <Meta title={`/${quizSlug}`}>
       <main>
-        <PageHeader header="Quiz page" icon={<List />} />
+        <PageHeader header={`/${QUIZZES_ROUTE}/${categorySlug}/${quizSlug}`} icon={<List />} />
         <ContentFrame mt>
           <div className="flex flex-col">
             <Button
@@ -37,13 +38,19 @@ function QuizPage() {
               <Plus />
               Create Quiz Question
             </Button>
-            <ul>
-              {isLoadingGET ? "LOADING" : quizQuestions![0].map((q) => (
-                <li key={q.id}>
-                  <QuizQuestionCard quizQuestion={q} />
-                </li>
-              ))}
-            </ul>
+            {isLoadingGET ? (
+              <div className="mt-6 mx-auto">
+                <LoadingSquares />
+              </div>
+            ) : (
+              <ul>
+                {quizQuestions![0].map((q) => (
+                  <li key={q.id}>
+                    <QuizQuestionCard quizQuestion={q} />
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         </ContentFrame>
       </main>

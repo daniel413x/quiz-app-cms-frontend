@@ -7,6 +7,8 @@ import PageHeader from "@/components/ui/common/PageHeader";
 import ContentFrame from "@/components/ui/common/ContentFrame";
 import { useGetQuizCategories } from "@/lib/api/QuizCategoryApi";
 import { Button } from "@/components/ui/common/shadcn/button";
+import LoadingSquares from "@/components/ui/common/LoadingSquares";
+import { QUIZZES_ROUTE } from "@/lib/consts";
 import QuizCategoryCard from "./components/QuizCategoryCard";
 import CreateQuizCategoryDialog from "./components/CreateQuizCategoryDialog";
 
@@ -16,9 +18,9 @@ function QuizzesPage() {
     isLoading: isLoadingGET,
   } = useGetQuizCategories();
   return (
-    <Meta title="Quiz Categories">
+    <Meta title={`/${QUIZZES_ROUTE}`}>
       <main>
-        <PageHeader header="Quiz Categories" icon={<List />} />
+        <PageHeader header={`/${QUIZZES_ROUTE}`} icon={<List />} />
         <ContentFrame mt>
           <div className="flex flex-col">
             <CreateQuizCategoryDialog>
@@ -30,13 +32,19 @@ function QuizzesPage() {
                 Create Quiz Category
               </Button>
             </CreateQuizCategoryDialog>
-            <ul className="">
-              {isLoadingGET ? "LOADING" : data![0].map((qC) => (
-                <li key={qC.id}>
-                  <QuizCategoryCard quizCategory={qC} />
-                </li>
-              ))}
-            </ul>
+            {isLoadingGET ? (
+              <div className="mt-6 mx-auto">
+                <LoadingSquares />
+              </div>
+            ) : (
+              <ul className="">
+                {isLoadingGET ? "LOADING" : data![0].map((qC) => (
+                  <li key={qC.id}>
+                    <QuizCategoryCard quizCategory={qC} />
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
 
         </ContentFrame>

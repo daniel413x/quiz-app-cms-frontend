@@ -22,7 +22,7 @@ function QuizQuestionCard({
     categorySlug,
   } = useParams();
   return (
-    <div className="flex items-center justify-between py-3 px-5">
+    <div className="flex items-center justify-between py-3">
       <Link
         className="w-full"
         to={`/${domainSlug}/${QUIZZES_ROUTE}/${categorySlug}/${quizSlug}/${quizQuestion.id}`}

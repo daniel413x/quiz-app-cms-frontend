@@ -19,7 +19,7 @@ function PageHeader({
   return (
     <ContentFrame>
       <div className={cn("flex justify-between items-center", className)}>
-        <h1 className="text-2xl font-bold flex-1 max-w-max">
+        <h1 className="text-2xl font-bold flex-1 max-w-max break-all">
           {isLoading ? (
             <Skeleton
               className="w-24 h-8 flex-1"
