@@ -6,7 +6,7 @@
 
 Register an application with Auth0 at https://auth0.com/. The CMS frontend and backend will use the same application. In the application settings panel, note down the *domain* and *client id*.
 
-Under *Application URIs*, find the text areas for *Allowed Callback URLs*, *Allowed Logout URLs*, and *Allowed Web Origins*. Add the 
+Under *Application URIs*, find the text areas for *Allowed Callback URLs*, *Allowed Logout URLs*, and *Allowed Web Origins*. Add the CMS frontend URL (e.g. http://localhost:5173).
 
 ## Set environmental variables
 
@@ -17,7 +17,7 @@ Under *Application URIs*, find the text areas for *Allowed Callback URLs*, *Allo
 <span style="color: gray">\# Must be the same as that of the CMS backend</span> \
 ``VITE_AUTH0_DOMAIN=`` \
 ``VITE_AUTH0_CLIENT_ID=`` \
-``VITE_AUTH0_REDIRECT_URI=http://localhost:3000`` \
+``VITE_AUTH0_REDIRECT_URI=http://localhost:5173`` \
 <span style="color: gray">\# Can be named arbitrarily but must be the same value as that of the CMS backend</span> \
 ``VITE_AUTH0_AUDIENCE=quiz-app-api``
 
